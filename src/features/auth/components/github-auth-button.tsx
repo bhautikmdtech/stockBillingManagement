@@ -1,25 +1,40 @@
 'use client';
 
-import { useSearchParams } from 'next/navigation';
-import { signIn } from 'next-auth/react';
 import { Button } from '@/components/ui/button';
 import { Icons } from '@/components/icons';
+import { signIn } from 'next-auth/react';
+import { useState } from 'react';
 
 export default function GithubSignInButton() {
-  const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get('callbackUrl');
+  const [isLoading, setIsLoading] = useState(false);
+
+  const loginWithGithub = async () => {
+    setIsLoading(true);
+    try {
+      await signIn('github', { callbackUrl: '/api/auth/github-callback' });
+    } catch (error) {
+      console.error('GitHub login error:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <Button
-      className='w-full'
-      variant='outline'
-      type='button'
-      onClick={() =>
-        signIn('github', { callbackUrl: callbackUrl ?? '/dashboard' })
-      }
+      variant="outline"
+      type="button"
+      disabled={isLoading}
+      onClick={loginWithGithub}
+      className="w-full"
     >
-      <Icons.github className='mr-2 h-4 w-4' />
-      Continue with Github
+      {isLoading ? (
+        <span>Loading...</span>
+      ) : (
+        <span className="flex items-center justify-center gap-2">
+          <Icons.github className="h-4 w-4" />
+          <span>GitHub</span>
+        </span>
+      )}
     </Button>
   );
 }
