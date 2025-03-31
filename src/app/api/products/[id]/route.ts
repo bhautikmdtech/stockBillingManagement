@@ -5,11 +5,11 @@ import { auth } from "@/lib/auth";
 
 // GET: Fetch a single product by ID
 export async function GET(
-  req: NextRequest,
-  context: { params: { id: string } }
+  request: NextRequest,
+  { params }: { params: { id: string } }
 ) {
   try {
-    const { id } = context.params;
+    const { id } = params;
 
     // Connect to the database
     await connectToDatabase();
@@ -33,11 +33,11 @@ export async function GET(
 
 // PUT: Update a product
 export async function PUT(
-  req: NextRequest,
-  context: { params: { id: string } }
+  request: NextRequest,
+  { params }: { params: { id: string } }
 ) {
   try {
-    const { id } = context.params;
+    const { id } = params;
 
     // Get the session to verify the user is authenticated
     const session = await auth();
@@ -57,7 +57,7 @@ export async function PUT(
     await connectToDatabase();
 
     // Parse the request body
-    const data = await req.json();
+    const data = await request.json();
 
     // Validate required fields
     if (
@@ -120,11 +120,11 @@ export async function PUT(
 
 // DELETE: Delete a product
 export async function DELETE(
-  req: NextRequest,
-  context: { params: { id: string } }
+  request: NextRequest,
+  { params }: { params: { id: string } }
 ) {
   try {
-    const { id } = context.params;
+    const { id } = params;
 
     // Get the session to verify the user is authenticated
     const session = await auth();
