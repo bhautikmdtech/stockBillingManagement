@@ -1,6 +1,7 @@
 import { NextAuthConfig } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GithubProvider from "next-auth/providers/github";
+import { authService } from "./api-services";
 
 const authConfig = {
   providers: [
@@ -36,23 +37,15 @@ const authConfig = {
             return null;
           }
 
-          const baseUrl = process.env.AUTH_URL || "http://localhost:3000";
+          try {
+            const userData = await authService.loginInternal({
+              email: credentials.email as string,
+              password: credentials.password as string,
+            });
 
-          const response = await fetch(`${baseUrl}/api/auth/login-internal`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              email: credentials.email,
-              password: credentials.password,
-            }),
-          });
-
-          const user = await response.json();
-
-          if (response.ok && user) {
-            return user;
+            return userData;
+          } catch (error) {
+            console.error("Login failed:", error);
           }
 
           return null;

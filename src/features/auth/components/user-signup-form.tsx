@@ -17,6 +17,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import * as z from "zod";
 import GithubSignInButton from "./github-auth-button";
+import { authService } from "@/lib/api-services";
 
 const formSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters" }),
@@ -54,31 +55,19 @@ export default function UserSignUpForm() {
     setIsLoading(true);
     
     try {
-      const response = await fetch('/api/auth/signup', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: data.name,
-          email: data.email,
-          password: data.password,
-          phoneNumber: data.phoneNumber,
-          city: data.city,
-          state: data.state
-        }),
+      await authService.register({
+        name: data.name,
+        email: data.email,
+        password: data.password,
+        phoneNumber: data.phoneNumber,
+        city: data.city,
+        state: data.state
       });
-      
-      const result = await response.json();
-      
-      if (!response.ok) {
-        throw new Error(result.error || 'Failed to register');
-      }
       
       toast.success('Account created successfully!');
       router.push('/');
     } catch (error: any) {
-      toast.error(error.message || 'Failed to create account');
+      toast.error(error.response?.data?.error || 'Failed to create account');
     } finally {
       setIsLoading(false);
     }

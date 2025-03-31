@@ -8,7 +8,7 @@ export interface IUser extends mongoose.Document {
   city: string;
   profilePicture: string;
   registerType: 'email' | 'google' | 'github';
-  role: 'admin' | 'user';
+  role: 'admin' | 'user' | 'superadmin';
   state: string;
   phoneNumber: string;
   accVerified: boolean;
@@ -58,7 +58,7 @@ const UserSchema = new mongoose.Schema(
     },
     role: { 
       type: String, 
-      enum: ['admin', 'user'],
+      enum: ['admin', 'user', 'superadmin'],
       default: 'user'
     },
     state: { 

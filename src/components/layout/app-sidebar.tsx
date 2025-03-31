@@ -1,10 +1,10 @@
-'use client';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+"use client";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Collapsible,
   CollapsibleContent,
-  CollapsibleTrigger
-} from '@/components/ui/collapsible';
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,8 +12,8 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu';
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import {
   Sidebar,
   SidebarContent,
@@ -27,9 +27,9 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
-  SidebarRail
-} from '@/components/ui/sidebar';
-import { navItems } from '@/constants/data';
+  SidebarRail,
+} from "@/components/ui/sidebar";
+import { navItems } from "@/constants/data";
 import {
   IconCircleCheck,
   IconBell,
@@ -37,32 +37,34 @@ import {
   IconChevronsDown,
   IconCreditCard,
   IconPhotoUp,
-  IconLogout
-} from '@tabler/icons-react';
-import { signOut, useSession } from 'next-auth/react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import * as React from 'react';
-import { Icons } from '../icons';
-import { OrgSwitcher } from '../org-switcher';
-import { useMediaQuery } from '@/hooks/use-media-query';
+  IconLogout,
+} from "@tabler/icons-react";
+import { signOut, useSession } from "next-auth/react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import * as React from "react";
+import { Icons } from "../icons";
+import { OrgSwitcher } from "../org-switcher";
+import { useMediaQuery } from "@/hooks/use-media-query";
+import { useRouter } from "next/navigation";
 
 export const company = {
-  name: 'Acme Inc',
+  name: "Acme Inc",
   logo: IconPhotoUp,
-  plan: 'Enterprise'
+  plan: "Enterprise",
 };
 
 const tenants = [
-  { id: '1', name: 'Acme Inc' },
-  { id: '2', name: 'Beta Corp' },
-  { id: '3', name: 'Gamma Ltd' }
+  { id: "1", name: "Acme Inc" },
+  { id: "2", name: "Beta Corp" },
+  { id: "3", name: "Gamma Ltd" },
 ];
 
 export default function AppSidebar() {
   const { data: session } = useSession();
   const pathname = usePathname();
   const { isOpen } = useMediaQuery();
+  const router = useRouter();
 
   const handleSwitchTenant = (_tenantId: string) => {
     // Tenant switching functionality would be implemented here
@@ -75,7 +77,7 @@ export default function AppSidebar() {
   }, [isOpen]);
 
   return (
-    <Sidebar collapsible='icon'>
+    <Sidebar collapsible="icon">
       <SidebarHeader>
         <OrgSwitcher
           tenants={tenants}
@@ -83,7 +85,7 @@ export default function AppSidebar() {
           onTenantSwitch={handleSwitchTenant}
         />
       </SidebarHeader>
-      <SidebarContent className='overflow-x-hidden'>
+      <SidebarContent className="overflow-x-hidden">
         <SidebarGroup>
           <SidebarGroupLabel>Overview</SidebarGroupLabel>
           <SidebarMenu>
@@ -94,7 +96,7 @@ export default function AppSidebar() {
                   key={item.title}
                   asChild
                   defaultOpen={item.isActive}
-                  className='group/collapsible'
+                  className="group/collapsible"
                 >
                   <SidebarMenuItem>
                     <CollapsibleTrigger asChild>
@@ -104,7 +106,7 @@ export default function AppSidebar() {
                       >
                         {item.icon && <Icon />}
                         <span>{item.title}</span>
-                        <IconChevronRight className='ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90' />
+                        <IconChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
                       </SidebarMenuButton>
                     </CollapsibleTrigger>
                     <CollapsibleContent>
@@ -149,54 +151,54 @@ export default function AppSidebar() {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton
-                  size='lg'
-                  className='data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground'
+                  size="lg"
+                  className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
                 >
-                  <Avatar className='h-8 w-8 rounded-lg'>
+                  <Avatar className="h-8 w-8 rounded-lg">
                     <AvatarImage
-                      src={session?.user?.image || ''}
-                      alt={session?.user?.name || ''}
+                      src={session?.user?.image || ""}
+                      alt={session?.user?.name || ""}
                     />
-                    <AvatarFallback className='rounded-lg'>
-                      {session?.user?.name?.slice(0, 2)?.toUpperCase() || 'CN'}
+                    <AvatarFallback className="rounded-lg">
+                      {session?.user?.name?.slice(0, 2)?.toUpperCase() || "CN"}
                     </AvatarFallback>
                   </Avatar>
-                  <div className='grid flex-1 text-left text-sm leading-tight'>
-                    <span className='truncate font-semibold'>
-                      {session?.user?.name || ''}
+                  <div className="grid flex-1 text-left text-sm leading-tight">
+                    <span className="truncate font-semibold">
+                      {session?.user?.name || ""}
                     </span>
-                    <span className='truncate text-xs'>
-                      {session?.user?.email || ''}
+                    <span className="truncate text-xs">
+                      {session?.user?.email || ""}
                     </span>
                   </div>
-                  <IconChevronsDown className='ml-auto size-4' />
+                  <IconChevronsDown className="ml-auto size-4" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
               <DropdownMenuContent
-                className='w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg'
-                side='bottom'
-                align='end'
+                className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
+                side="bottom"
+                align="end"
                 sideOffset={4}
               >
-                <DropdownMenuLabel className='p-0 font-normal'>
-                  <div className='flex items-center gap-2 px-1 py-1.5 text-left text-sm'>
-                    <Avatar className='h-8 w-8 rounded-lg'>
+                <DropdownMenuLabel className="p-0 font-normal">
+                  <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
+                    <Avatar className="h-8 w-8 rounded-lg">
                       <AvatarImage
-                        src={session?.user?.image || ''}
-                        alt={session?.user?.name || ''}
+                        src={session?.user?.image || ""}
+                        alt={session?.user?.name || ""}
                       />
-                      <AvatarFallback className='rounded-lg'>
+                      <AvatarFallback className="rounded-lg">
                         {session?.user?.name?.slice(0, 2)?.toUpperCase() ||
-                          'CN'}
+                          "CN"}
                       </AvatarFallback>
                     </Avatar>
-                    <div className='grid flex-1 text-left text-sm leading-tight'>
-                      <span className='truncate font-semibold'>
-                        {session?.user?.name || ''}
+                    <div className="grid flex-1 text-left text-sm leading-tight">
+                      <span className="truncate font-semibold">
+                        {session?.user?.name || ""}
                       </span>
-                      <span className='truncate text-xs'>
-                        {' '}
-                        {session?.user?.email || ''}
+                      <span className="truncate text-xs">
+                        {" "}
+                        {session?.user?.email || ""}
                       </span>
                     </div>
                   </div>
@@ -204,22 +206,24 @@ export default function AppSidebar() {
                 <DropdownMenuSeparator />
 
                 <DropdownMenuGroup>
-                  <DropdownMenuItem>
-                    <IconCircleCheck className='mr-2 h-4 w-4' />
-                    Account
+                  <DropdownMenuItem
+                    onClick={() => router.push("/dashboard/profile")}
+                  >
+                    <IconCircleCheck className="mr-2 h-4 w-4" />
+                    Profile
                   </DropdownMenuItem>
                   <DropdownMenuItem>
-                    <IconCreditCard className='mr-2 h-4 w-4' />
+                    <IconCreditCard className="mr-2 h-4 w-4" />
                     Billing
                   </DropdownMenuItem>
                   <DropdownMenuItem>
-                    <IconBell className='mr-2 h-4 w-4' />
+                    <IconBell className="mr-2 h-4 w-4" />
                     Notifications
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => signOut()}>
-                  <IconLogout className='mr-2 h-4 w-4' />
+                  <IconLogout className="mr-2 h-4 w-4" />
                   Log out
                 </DropdownMenuItem>
               </DropdownMenuContent>
